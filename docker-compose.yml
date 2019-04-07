@@ -1,0 +1,75 @@
+version: "3"
+
+services:
+  php-7.1:
+    build: ./docker/php-7.1
+    tty: true
+    volumes:
+      - ./:/var/www/sources
+    environment:
+      XDEBUG_CONFIG: ${XDEBUG_CONFIG:-}
+      PHP_IDE_CONFIG: ${PHP_IDE_CONFIG:-}
+  php-7.2:
+    build: ./docker/php-7.2
+    tty: true
+    volumes:
+      - ./:/var/www/sources
+    environment:
+      XDEBUG_CONFIG: ${XDEBUG_CONFIG:-}
+      PHP_IDE_CONFIG: ${PHP_IDE_CONFIG:-}
+  php-7.3:
+    build: ./docker/php-7.3
+    tty: true
+    volumes:
+      - ./:/var/www/sources
+    environment:
+      XDEBUG_CONFIG: ${XDEBUG_CONFIG:-}
+      PHP_IDE_CONFIG: ${PHP_IDE_CONFIG:-}
+
+  python:
+    build: ./docker/python
+    tty: true
+    volumes:
+      - ./symfony-docs:/var/www/sources
+
+  mysql:
+    image: mysql:5.5
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+
+  mariadb:
+    image: mariadb:10.3.2
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+
+  postgres:
+    image: postgres:10.4-alpine
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test
+
+  pma_mysql:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "18080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
+
+  pma_mariadb:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "18081:80"
+    environment:
+      PMA_HOST: mariadb
+      PMA_USER: root
+      PMA_PASSWORD: root
+
+  amqp:
+    image: rabbitmq:3.7.8-management
+    ports:
+      - "18082:15672"
